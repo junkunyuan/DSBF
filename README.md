@@ -7,12 +7,15 @@ This repository contains the implementation code for paper:
 
 Junkun Yuan, Xu Ma, Defang Chen, Kun Kuang, Fei Wu, Lanfen Lin
 
+*arXiv preprint, 2021*
+
 [[arXiv](https://arxiv.org/abs/2110.00726)]
 
 ## Brief Abstract for the Paper
 <p align="center">
     <img src="framework.png" width="900"> <br>
 </p>
+
 Domain generalization (DG) utilizes multiple labeled
 source datasets to train a generalizable model for unseen target
 domains. However, due to expensive annotation costs, the requirements
@@ -32,10 +35,12 @@ You may need to build suitable Python environment by installing the following pa
 
 ## Data Preparation
 We list the adopted datasets in the following.
+
 | Datasets | Download link|
 | -- | -- |
 | PACS [1]</a> | https://dali-dl.github.io/project_iccv2017.html |
 | Office-Home [2] | https://www.hemanthdv.org/officeHomeDataset.html | 
+
 Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
 
 If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
@@ -59,4 +64,5 @@ If you have any questions, feel free to contact us through email (yuanjk@zju.edu
 
 ## References
 [1] Li, Da, et al. "Deeper, broader and artier domain generalization." Proceedings of the IEEE international conference on computer vision. 2017.
+
 [2] Venkateswara, Hemanth, et al. "Deep hashing network for unsupervised domain adaptation." Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
