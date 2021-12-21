@@ -37,13 +37,13 @@ You may need to build suitable Python environment by installing the following pa
 We list the adopted datasets in the following.
 
 | Datasets | Download link|
-| -- | -- |
+| :-: | :- |
 | PACS [1]</a> | https://dali-dl.github.io/project_iccv2017.html |
 | Office-Home [2] | https://www.hemanthdv.org/officeHomeDataset.html | 
 
-Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
-
-If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
+Please note:
+- Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
+- If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
 
 ## Usage
 
