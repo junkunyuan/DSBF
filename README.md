@@ -46,6 +46,13 @@ Please note:
 - If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
 
 ## Usage
+1. Prepare the datasets. 
+2. Update the .txt files under folder "DSBF/dataset/pthList/" with your dataset path.
+3. Run the code with command: 
+```
+nohup sh run.sh > run.txt 2>&1 &
+```
+4. Check results in DSBF/**dataset**-**task**-**target-data**.txt.
 
 
 ## Citation
