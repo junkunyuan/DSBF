@@ -23,10 +23,10 @@ class OneDataset(Dataset):
         return len(self.pth2label)
 
 class AlignDataset(Dataset):
-    def __init__(self,pth2labels,transforms,config):
+    def __init__(self, pth2labels, transforms, config):
         self.config = config
-        self.p2ls = [self.split_class(pth2labels[0]),self.split_class(pth2labels[1])]
-        self.tfs = [transforms[0],transforms[1]]
+        self.p2ls = [self.split_class(pth2labels[0]), self.split_class(pth2labels[1])]
+        self.tfs = [transforms[0], transforms[1]]
         self.bts = self.limit_bts()
 
     def __len__(self):
@@ -34,12 +34,12 @@ class AlignDataset(Dataset):
 
     def __getitem__(self, index):
         data = [None]*5
-        for i,d in enumerate(["s","t"]):
+        for i, d in enumerate(["s", "t"]):
             cur_pths = self.p2ls[i]
-            inds = random.choices(range(len(cur_pths[index])),k=max(self.bts[0][index],self.bts[1][index]))
-            pths = np.asarray([cur_pths[index][ind][0] for ind in inds],dtype=np.str)
+            inds = random.choices(range(len(cur_pths[index])), k=max(self.bts[0][index],self.bts[1][index]))
+            pths = np.asarray([cur_pths[index][ind][0] for ind in inds], dtype=np.str)
             label = torch.tensor([int(cur_pths[index][ind][1]) for ind in inds])
-            imgs = torch.stack([self.tfs[i](load_img(p)) for p in pths],0)
+            imgs = torch.stack([self.tfs[i](load_img(p)) for p in pths], 0)
 
             if d == "s":
                 data[0] = imgs
@@ -48,65 +48,65 @@ class AlignDataset(Dataset):
                 data[2] = imgs
                 data[3] = pths
                 data[4] = label
-        return data[0],data[1],data[2],data[3],data[4]
+        return data[0], data[1], data[2], data[3], data[4]
 
-    def split_class(self,pth2label):
+    def split_class(self, pth2label):
 
         results = {}
         for c in range(self.config["class_num"]):
-            results[c] = pth2label[np.where(pth2label[:,1]==str(c))]
+            results[c] = pth2label[np.where(pth2label[:, 1]==str(c))]
         return results
 
     def limit_bts(self):
         results = [None]*2
-        bts = [self.config["s_bs"],self.config["t_bs"]]
-        for i,d in enumerate(["s","t"]):
+        bts = [self.config["s_bs"], self.config["t_bs"]]
+        for i, d in enumerate(["s", "t"]):
             results[i] = {}
             for c in range(self.config["class_num"]):
-                results[i][c] = min(bts[i],len(self.p2ls[i][c]))
+                results[i][c] = min(bts[i], len(self.p2ls[i][c]))
         return results
-    def consturct(self,dict):
+    def consturct(self, dict):
         results={}
-        keys = np.asarray(list(dict.keys()),dtype=str)
-        values = np.asarray(list(dict.values()),dtype=str)
+        keys = np.asarray(list(dict.keys()), dtype=str)
+        values = np.asarray(list(dict.values()), dtype=str)
         for c in range(self.config["class_num"]):
             index_c = np.where(values==str(c))
-            keys_c = np.asarray(keys[index_c]).reshape(-1,1)
-            values_c = np.asarray(values[index_c]).reshape(-1,1)
-            results[c] = np.concatenate((keys_c,values_c),1)
+            keys_c = np.asarray(keys[index_c]).reshape(-1, 1)
+            values_c = np.asarray(values[index_c]).reshape(-1, 1)
+            results[c] = np.concatenate((keys_c, values_c), 1)
         self.p2ls[1] = results
         # print(results)
 
 class ClassDataset(Dataset):
-    def __init__(self,pth2label,transform,config,align_bs):
+    def __init__(self, pth2label, transform, config, align_bs):
         self.config = config
         self.pth2label = self.split_class(pth2label)
         self.transform = transform
         self.align_bs = align_bs
         # self.bs = self.limit_bts()
 
-    def split_class(self,pth2lable):
+    def split_class(self, pth2lable):
         result = {}
         for c in range(self.config["class_num"]):
-            result[c] = pth2lable[np.where(pth2lable[:,1]==str(c))]
+            result[c] = pth2lable[np.where(pth2lable[:, 1]==str(c))]
         return result
     def limit_bts(self):
         result = {}
         bs = self.align_bs
         for c in range(self.config["class_num"]):
-            result[c] = min(bs,len(self.pth2label[c]))
+            result[c] = min(bs, len(self.pth2label[c]))
         return result
 
     def __len__(self):
         return self.config["class_num"]
 
     def __getitem__(self, index):
-        inds = random.choices(range(len(self.pth2label[index])),k=self.align_bs)
-        pths = np.asarray([self.pth2label[index][ind][0] for ind in inds],dtype=np.str)
+        inds = random.choices(range(len(self.pth2label[index])), k=self.align_bs)
+        pths = np.asarray([self.pth2label[index][ind][0] for ind in inds], dtype=np.str)
         labels = torch.tensor([int(self.pth2label[index][ind][1]) for ind in inds])
-        imgs = torch.stack([self.transform(load_img(p)) for p in pths],0)
+        imgs = torch.stack([self.transform(load_img(p)) for p in pths], 0)
 
-        return imgs,labels
+        return imgs, labels
 
     def construct(self, pth2label):
         results = {}
@@ -114,13 +114,13 @@ class ClassDataset(Dataset):
         values = np.asarray(list(pth2label.values()), dtype=str)
         for c in range(self.config["class_num"]):
             index_c = np.where(values==str(c))
-            keys_c = np.asarray(keys[index_c]).reshape(-1,1)
-            values_c = np.asarray(values[index_c]).reshape(-1,1)
-            results[c] = np.concatenate((keys_c,values_c),1)
+            keys_c = np.asarray(keys[index_c]).reshape(-1, 1)
+            values_c = np.asarray(values[index_c]).reshape(-1, 1)
+            results[c] = np.concatenate((keys_c, values_c), 1)
         self.pth2label = results
 
 class DgAlighDataset(Dataset):
-    def __init__(self,*datasets,choose_num=3):
+    def __init__(self, *datasets, choose_num=3):
         self.datasets = datasets
         self.all = list(range(len(self.datasets)))
         self.choose_num = choose_num
@@ -129,14 +129,14 @@ class DgAlighDataset(Dataset):
         return self.datasets[0].__len__()
 
     def __getitem__(self, index):
-        datas,labels = [],[]
+        datas, labels = [], []
         for i in range(self.choose_num):
-            data,label = self.datasets[self.all[i]].__getitem__(index)
+            data, label = self.datasets[self.all[i]].__getitem__(index)
             datas.append(data)
             labels.append(label)
-        return datas,labels
+        return datas, labels
 
-    def construct(self,pths2labels):
+    def construct(self, pths2labels):
         length = len(pths2labels)
         for i in range(length):
             self.datasets[i+1].construct(pths2labels[i])

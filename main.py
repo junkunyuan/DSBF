@@ -34,11 +34,11 @@ class Trainer:
         else:
             self.netF = resnet18(pretrained=True, classes=args.config["class_num"]).cuda()
             bottleneck_dim = 256
-        self.netB = FeatBootleneck(self.netF.in_features,type="wn",bottleneck_dim=bottleneck_dim).to(device)
-        self.netC = Classifier(args.config["class_num"],bottleneck_dim=bottleneck_dim).to(device)
-        self.netIV1 = FeatBootleneck(self.netF.in_features, type="wn",bottleneck_dim=bottleneck_dim).to(device)
-        self.netIV2 = FeatBootleneck(self.netF.in_features, type="wn",bottleneck_dim=bottleneck_dim).to(device)
-        self.netA = NEWDGAttention(len(args.loaders["source_unlabel_trains"]),in_dim=bottleneck_dim).to(device)
+        self.netB = FeatBootleneck(self.netF.in_features, type="wn", bottleneck_dim=bottleneck_dim).to(device)
+        self.netC = Classifier(args.config["class_num"], bottleneck_dim=bottleneck_dim).to(device)
+        self.netIV1 = FeatBootleneck(self.netF.in_features, type="wn", bottleneck_dim=bottleneck_dim).to(device)
+        self.netIV2 = FeatBootleneck(self.netF.in_features, type="wn", bottleneck_dim=bottleneck_dim).to(device)
+        self.netA = NEWDGAttention(len(args.loaders["source_unlabel_trains"]), in_dim=bottleneck_dim).to(device)
 
         """Initalize optimizers."""
         params_groups = self.get_params(self.netIV1, self.netIV2)
@@ -56,18 +56,18 @@ class Trainer:
 
     def pse_label(self):
         """Calculate the label before every epoch."""
-        self.netF.eval(),self.netB.eval(),self.netC.eval()
+        self.netF.eval(), self.netB.eval(), self.netC.eval()
         pseudo_labels = []
         for i, loader in enumerate(self.args.loaders["source_unlabel_vals"]):
-            write_log(self.outf,"unlabel dataset {} get pseudo labels:".format(i))
-            pseudo_labels.append(self.obtain_label(loader,self.netF,self.netB,self.netC))
+            write_log(self.outf, "unlabel dataset {} get pseudo labels:".format(i))
+            pseudo_labels.append(self.obtain_label(loader, self.netF, self.netB, self.netC))
         self.args.loaders["align"].dataset.construct(pseudo_labels)
         return pseudo_labels
 
 
     def train_epoch_IV(self, epoch):
         """Train the models."""
-        self.netF.train(), self.netB.train(), self.netC.train(), self.netIV1.train(),self.netIV2.train()
+        self.netF.train(), self.netB.train(), self.netC.train(), self.netIV1.train(), self.netIV2.train()
         length = int(len(self.args.loaders["source_unlabel_trains"][0]))
         unlabel_trains_loader = []
         for loader in self.args.loaders["source_unlabel_trains"]:
@@ -81,14 +81,14 @@ class Trainer:
         for it in range(length):
             """Use unlabeled source dataset to train netF and netB."""
             for i,loader in enumerate(unlabel_trains_loader):
-                datas,pred,pths = next(loader)
+                datas, pred, pths = next(loader)
                 pred = pred.to(self.device)
                 datas = datas.to(self.device)
                 features = self.netB(self.netF(datas))
                 outputs = self.netC(features)
                 if self.args.pseudo:
-                    pred = torch.tensor(itemgetter(*pths)(pseudo_labels[i]),dtype=torch.long).cuda()
-                ce_loss = self.criterion_ce(outputs,pred)                         
+                    pred = torch.tensor(itemgetter(*pths)(pseudo_labels[i]), dtype=torch.long).cuda()
+                ce_loss = self.criterion_ce(outputs, pred)                         
                 im_loss = self.criterion_im(outputs)
                 loss_ce_im = (ce_loss + im_loss) * self.args.lambda_
                 self.optimizer_FB.zero_grad()
@@ -110,8 +110,8 @@ class Trainer:
             out1 = self.netB(self.netF(data1))
             out2 = self.netIV1(self.netF(data2))
             out3 = self.netIV2(self.netF(data3))
-            loss12_iv = 0.5 * self.criterion_iv(out1,out2)
-            loss13_iv = 0.5 * self.criterion_iv(out1,out3)
+            loss12_iv = 0.5 * self.criterion_iv(out1, out2)
+            loss13_iv = 0.5 * self.criterion_iv(out1, out3)
             loss_iv = (loss12_iv + loss13_iv) * self.args.gamma
             self.optimizer_IV1.zero_grad(), self.optimizer_IV2.zero_grad()
             loss_iv.backward()
@@ -126,14 +126,14 @@ class Trainer:
             out2 = self.netIV1(self.netF(data2))
             out3 = self.netIV2(self.netF(data3))
             if self.args.att > 0:
-                (out2,out3), _ = self.netA(out2, out3)
+                (out2, out3), _ = self.netA(out2, out3)
             out2 = self.netC(out2)
             out3 = self.netC(out3)
 
             self.optimizer_C.zero_grad(), self.optimizer_A.zero_grad()
             loss2 = self.criterion_ce(out2, label2) * 0.5 * self.args.gamma       
             loss2.backward(retain_graph=True)
-            loss3 = self.criterion_ce(out3,label3) * 0.5 * self.args.gamma
+            loss3 = self.criterion_ce(out3, label3) * 0.5 * self.args.gamma
             loss3.backward()
             self.optimizer_A.step(), self.optimizer_C.step()
 
@@ -145,56 +145,56 @@ class Trainer:
                 acc = self.test(self.args.loaders["target"])
                 acc_source = self.test(self.args.loaders["source_label_train"])
                 self.accs.append("{:.2f}".format(acc))
-                write_log(self.outf,"test; Epoch: {}, acc: {:.2f}/{:.2f}".format(epoch, acc,acc_source))
+                write_log(self.outf, "test; Epoch: {}, acc: {:.2f}/{:.2f}".format(epoch, acc,acc_source))
                 if acc > self.max_acc:
                     self.max_acc = acc
                     self.max_netF = self.netF.state_dict()
                     self.max_netB = self.netB.state_dict()
                     self.max_netC = self.netC.state_dict()
-                self.netF.train(),self.netB.train(),self.netC.train()
+                self.netF.train(), self.netB.train(), self.netC.train()
 
 
         self.netF.eval(), self.netB.eval(), self.netC.eval()
         acc = self.test(self.args.loaders["target"])
-        write_log(self.outf,"test; Epoch: {}, acc: {:.2f}\n".format(epoch, acc))
+        write_log(self.outf, "test; Epoch: {}, acc: {:.2f}\n".format(epoch, acc))
         self.writer.add_scalar("acc", acc, epoch)
 
     def pre_train(self):
-        best_netF,best_netB,best_netC = None,None,None
-        self.netF.train(),self.netB.train(),self.netC.train()
+        best_netF, best_netB, best_netC = None,None,None
+        self.netF.train(), self.netB.train(),self.netC.train()
         loader_len = len(self.args.loaders["source_label_train"])
         max_iter = int(1.5*self.args.max_epoch) * loader_len
         max_acc = 0
 
         for it in range(max_iter):
             try:
-                datas,labels = iter_source_label.next()
+                datas, labels = iter_source_label.next()
             except:
                 iter_source_label = iter(self.args.loaders["source_label_train"])
-                datas,labels = iter_source_label.next()
-            datas,labels = datas.to(self.device),labels.to(self.device)
+                datas, labels = iter_source_label.next()
+            datas, labels = datas.to(self.device), labels.to(self.device)
             """use data1 to train model FBC"""
             out = self.netC(self.netB(self.netF(datas)))
-            loss_ce = self.criterion_ce(out,labels)
+            loss_ce = self.criterion_ce(out, labels)
             self.optimizer_FBC.zero_grad()
             loss_ce.backward()
             self.optimizer_FBC.step()
-            self.writer.add_scalar("loss_ce",loss_ce,it)
+            self.writer.add_scalar("loss_ce", loss_ce, it)
 
             if ((it % self.args.step) == 0 and it !=0) or it == max_iter:
-                self.netF.eval(),self.netB.eval(),self.netC.eval()
+                self.netF.eval(), self.netB.eval(), self.netC.eval()
                 acc = self.test(self.args.loaders["source_label_val"])
-                write_log(self.outf,"val: iter_num: {}/{}, acc: {:.2f}".format(it,max_iter,acc))
+                write_log(self.outf, "val: iter_num: {}/{}, acc: {:.2f}".format(it,max_iter,acc))
                 if acc > max_acc:
                     max_acc = acc
                     best_netF = self.netF.state_dict()
                     best_netB = self.netB.state_dict()
                     best_netC = self.netC.state_dict()
-                self.netF.train(),self.netB.train(),self.netC.eval()
+                self.netF.train(), self.netB.train(), self.netC.eval()
         if self.args.d_name == "pacs":
-            torch.save(best_netF,osp.join(self.output_dir,"source_F.pt"))
-            torch.save(best_netB,osp.join(self.output_dir,"source_B.pt"))
-            torch.save(best_netC,osp.join(self.output_dir,"source_C.pt"))
+            torch.save(best_netF, osp.join(self.output_dir, "source_F.pt"))
+            torch.save(best_netB, osp.join(self.output_dir, "source_B.pt"))
+            torch.save(best_netC, osp.join(self.output_dir, "source_C.pt"))
         else:
             torch.save(self.netF.state_dict(), osp.join(self.output_dir, "source_F.pt"))
             torch.save(self.netB.state_dict(), osp.join(self.output_dir, "source_B.pt"))
@@ -202,7 +202,7 @@ class Trainer:
 
         self.netF.eval(), self.netB.eval(), self.netC.eval()
         acc = self.test(self.args.loaders["target"])
-        write_log(self.outf,"target: acc: {:.2f}".format(acc))
+        write_log(self.outf, "target: acc: {:.2f}".format(acc))
 
     def test(self, loader):
         total = 0
@@ -216,7 +216,7 @@ class Trainer:
                 total += data.size(0)
         return (float(correct)/total) * 100
 
-    def get_params(self,*netIVs):
+    def get_params(self, *netIVs):
         params_group_FBC = []
         params_group_FB = []
         params_group_C = []
@@ -241,8 +241,8 @@ class Trainer:
 
     def train(self):
         """Pre-train (model initialization)."""
-        write_log(self.outf,"**********  pre_train  ***********")
-        if (not osp.exists(osp.join(self.output_dir,"source_F.pt"))) or (not self.args.model_reuse):
+        write_log(self.outf, "**********  pre_train  ***********")
+        if (not osp.exists(osp.join(self.output_dir, "source_F.pt"))) or (not self.args.model_reuse):
             self.pre_train()
 
         """train"""
@@ -286,7 +286,7 @@ class Trainer:
                 else:
                     all_fea = torch.cat((all_fea, feas.float().cpu()), 0)
                     all_output = torch.cat((all_output, outputs.float().cpu()), 0)
-                    all_pth = np.concatenate((all_pth,pths),0)
+                    all_pth = np.concatenate((all_pth, pths), 0)
                     all_label = torch.cat((all_label, labels.float()), 0)
 
         all_output = nn.Softmax(dim=1)(all_output)
@@ -315,12 +315,12 @@ class Trainer:
 
         acc = np.sum(pred_label == all_label.float().numpy()) / len(all_fea)
         log_str = 'Accuracy = {:.2f}% -> {:.2f}%'.format(accuracy * 100, acc * 100)
-        write_log(self.outf,log_str)
+        write_log(self.outf, log_str)
 
         pred_label = list(pred_label.astype("int"))
         all_pth = list(all_pth)
 
-        return dict(zip(all_pth,pred_label))
+        return dict(zip(all_pth, pred_label))
 
 
 def analytic_para():
@@ -328,8 +328,8 @@ def analytic_para():
     parser = argparse.ArgumentParser(description='DG')
     
     """Object dataset setting."""
-    parser.add_argument("--outdir",type=str,default="DG")
-    parser.add_argument("--pseudo",type=int,default=1, help="1: SLDG; 0: CDG")
+    parser.add_argument("--outdir", type=str, default="DG")
+    parser.add_argument("--pseudo", type=int, default=1, help="1: SLDG; 0: CDG")
     parser.add_argument("--d_name", type=str, default="pacs", help="dataset name")
     parser.add_argument("--t_da_i", type=int, default=0, help="the index of target domain in dataset config")
     parser.add_argument("--bs", type=int, default=64, help="batch_size")
@@ -346,9 +346,9 @@ def analytic_para():
     parser.add_argument('--workers', type=int, default=4, help="number of workers")
     parser.add_argument('--lr', type=float, default=0.01, help="learning rate")
     parser.add_argument('--seed', type=int, default=0, help="random seed")
-    parser.add_argument('--lambda_', type=float, default=1,help='hyper-parameter lambda')
+    parser.add_argument('--lambda_', type=float, default=1, help='hyper-parameter lambda')
     parser.add_argument('--gamma', type=float, default=1, help='hyper-parameter gamma')
-    parser.add_argument("--label",type=int, default=1, help="labeled source dataset")
+    parser.add_argument("--label", type=int, default=1, help="labeled source dataset")
     parser.add_argument("--att", type=int, default=1, help="whether use attention")
     parser.add_argument('--gpu_id', type=str, nargs='?', default='0', help="gpu id")
     

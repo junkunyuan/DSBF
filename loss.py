@@ -7,11 +7,11 @@ def Entropy(input_):
     return entropy
 
 class Lim(nn.Module):
-    def __init__(self,epsilon):
-        super(Lim,self).__init__()
+    def __init__(self, epsilon):
+        super(Lim, self).__init__()
         self.epsilon = epsilon
 
-    def forward(self,outs):
+    def forward(self, outs):
         softmax_out = nn.Softmax(dim=1)(outs)
         entropy_loss = torch.mean(Entropy(softmax_out))
         msoftmax = softmax_out.mean(dim=0)

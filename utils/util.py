@@ -12,7 +12,7 @@ def print_args(args):
         s += "{}:{}\n".format(arg, content)
     return s
 
-def write_log(out_file,log_str):
+def write_log(out_file, log_str):
     print(log_str)
     out_file.write(log_str + '\n')
     out_file.flush()

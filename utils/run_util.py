@@ -33,4 +33,4 @@ def lr_scheduler(optimizer, iter_num, max_iter, gamma=10, power=0.75):
         param_group['weight_decay'] = 1e-3
         param_group['momentum'] = 0.9
         param_group['nesterov'] = True
-    return optimizer,now_lr
+    return optimizer, now_lr

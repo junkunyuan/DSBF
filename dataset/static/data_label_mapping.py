@@ -235,8 +235,8 @@ vlcs_mapping={
 }
 
 if __name__ == '__main__':
-    for exp_name in ["a2c","a2p","a2r","c2a","c2p","c2r","p2a","p2c","p2r","r2a","r2c","r2p"]:
+    for exp_name in ["a2c", "a2p", "a2r", "c2a", "c2p", "c2r", "p2a", "p2c", "p2r", "r2a", "r2c", "r2p"]:
         str = "nohup python ./tools/train.py --cfg ./experiments/config/Office-home/CAN/{}.yaml --method CAN --exp_name " \
               "officehome_{} 2>&1 | tee ./experiments/ckpt/office-home/{}_log.txt > nohup/officehome_{}_nohup.txt 2>&1 " \
-              "&".format(exp_name,exp_name,exp_name,exp_name)
+              "&".format(exp_name, exp_name, exp_name, exp_name)
         print(str)
