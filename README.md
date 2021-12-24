@@ -40,8 +40,10 @@ We list the adopted datasets in the following.
 | :-: | :- |
 | PACS [1]</a> | https://dali-dl.github.io/project_iccv2017.html |
 | Office-Home [2] | https://www.hemanthdv.org/officeHomeDataset.html | 
+|Office-Caltech-Home [2, 3] | https://people.eecs.berkeley.edu/~jhoffman/domainadapt & https://www.hemanthdv.org/officeHomeDataset.html|
 
 Please note:
+- Office-Caltech-Home dataset is constructed by choosing the common classes from Office-Caltech [3] and Office-Home datasets, see our paper for more details.
 - Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
 - If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
 
@@ -73,3 +75,5 @@ If you have any questions, feel free to contact us through email (yuanjk@zju.edu
 [1] Li, Da, et al. "Deeper, broader and artier domain generalization." Proceedings of the IEEE international conference on computer vision. 2017.
 
 [2] Venkateswara, Hemanth, et al. "Deep hashing network for unsupervised domain adaptation." Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
+
+[3] Saenko, Kate, et al. "Adapting visual category models to new domains." European conference on computer vision. Springer, Berlin, Heidelberg, 2010.
