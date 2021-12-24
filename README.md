@@ -43,7 +43,7 @@ We list the adopted datasets in the following.
 |Office-Caltech-Home [2, 3] | https://people.eecs.berkeley.edu/~jhoffman/domainadapt & https://www.hemanthdv.org/officeHomeDataset.html|
 
 Please note:
-- Office-Caltech-Home dataset is constructed by choosing the common classes from Office-Caltech [3] and Office-Home datasets, see our paper for more details.
+- Office-Caltech-Home dataset is constructed by choosing the common classes from Office-Caltech [3] and Office-Home [2] datasets, please see our paper for more details.
 - Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
 - If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
 
