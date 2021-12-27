@@ -56,6 +56,9 @@ nohup sh run.sh > run.txt 2>&1 &
 ```
 4. Check results in DSBF/**dataset**-**task**-**target-data**.txt.
 
+## Updates
+- [12/27/2021] We uploaded a new arXiv version. See [new arXiv version](https://arxiv.org/abs/2110.00726).
+
 
 ## Citation
 If you find our code or idea useful for your research, please cite our work.
