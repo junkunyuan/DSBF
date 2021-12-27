@@ -23,7 +23,7 @@ of labeling all the source data are hard to be met in real-world applications.
 
 We investigate a Single Labeled Domain Generalization (SLDG) task with only one source domain being labeled, which is more practical and challenging than the Conventional Domain Generalization (CDG). A major obstacle in the SLDG task is the discriminability-generalization bias: discriminative information in the labeled source dataset may contain domain-specific bias, constraining the generalization of the trained model. 
 
-To tackle this challenging task, we propose Domain-Specific Bias Filtering (DSBF), which initializes a discriminative model with the labeled source data and filters out its domain-specific bias with the unlabeled source data for generalization improvement. We divide the filtering process into: (1) Feature extractor debiasing using k-means clustering-based semantic feature re-extraction; and (2) Classifier calibrating using attention-guided semantic feature projection.
+To tackle this challenging task, we propose Domain-Specific Bias Filtering (DSBF), which initializes a discriminative model with the labeled source data and filters out its domain-specific bias with the unlabeled source data for generalization improvement. We divide the filtering process into (1) feature extractor debiasing using k-means clustering-based semantic feature re-extraction and (2) classifier calibrating using attention-guided semantic feature projection.
 
 ## Requirements
 You may need to build suitable Python environment by installing the following packages (Anaconda is recommended).
