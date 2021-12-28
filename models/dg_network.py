@@ -1,6 +1,3 @@
-"""
-    这个是与 main_dg_cdd.py配套的 network
-"""
 from torch.utils import model_zoo
 from torchvision.models.resnet import BasicBlock,model_urls,Bottleneck
 import torch
