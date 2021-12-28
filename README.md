@@ -33,6 +33,10 @@ You may need to build suitable Python environment by installing the following pa
 * tensorboardx 2.1
 * numpy 1.19
 
+Device:
+* GPU with VRAM >5GB (strictly).
+* Memory >8GB.
+
 ## Data Preparation
 We list the adopted datasets in the following.
 
