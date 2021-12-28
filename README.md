@@ -44,6 +44,7 @@ We list the adopted datasets in the following.
 
 Please note:
 - Office-Caltech-Home dataset is constructed by choosing the common classes from Office-Caltech [3] and Office-Home [2] datasets, please see our paper for more details.
+- Our dataset split follows previous works like RSC ([Code](https://github.com/DeLightCMU/RSC)) [4].
 - Although these datasets are open-sourced, you may need to have permission to use the datasets under the datasets' license. 
 - If you're a dataset owner and do not want your dataset to be included here, please get in touch with us via a GitHub issue. Thanks!
 
@@ -80,3 +81,5 @@ If you have any questions, feel free to contact us through email (yuanjk@zju.edu
 [2] Venkateswara, Hemanth, et al. "Deep hashing network for unsupervised domain adaptation." Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
 
 [3] Saenko, Kate, et al. "Adapting visual category models to new domains." European conference on computer vision. Springer, Berlin, Heidelberg, 2010.
+
+[4] Huang, Zeyi, et al. "Self-challenging improves cross-domain generalization." Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part II 16. Springer International Publishing, 2020.
