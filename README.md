@@ -3,7 +3,7 @@
 ## Introduction
 This repository contains the implementation code for paper:
 
-**Domain-Specific Bias Filtering for Single Labeled Domain Generalization**
+<FONT size=3>**Domain-Specific Bias Filtering for Single Labeled Domain Generalization**</FONT>
 
 Junkun Yuan, Xu Ma, Defang Chen, Kun Kuang, Fei Wu, Lanfen Lin
 
@@ -77,7 +77,7 @@ If you find our code or idea useful for your research, please cite our work.
 ```
 
 ## Contact
-If you have any questions, feel free to contact us through email (yuanjk@zju.edu.cn) or GitHub issues. Thanks!
+If you have any questions, feel free to contact us through email (yuanjk@zju.edu.cn or maxu@zju.edu.cn) or GitHub issues. Thanks!
 
 ## References
 [1] Li, Da, et al. "Deeper, broader and artier domain generalization." Proceedings of the IEEE international conference on computer vision. 2017.
