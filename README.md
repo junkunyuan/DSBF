@@ -3,7 +3,7 @@
 ## Introduction
 This repository contains the implementation code for paper:
 
-<FONT size=4>**Domain-Specific Bias Filtering for Single Labeled Domain Generalization**</FONT>
+<FONT size=5>**Domain-Specific Bias Filtering for Single Labeled Domain Generalization**</FONT>
 
 Junkun Yuan, Xu Ma, Defang Chen, Kun Kuang, Fei Wu, Lanfen Lin
 
