@@ -54,12 +54,12 @@ Please note:
 
 ## Usage
 1. Prepare the datasets. 
-2. Update the .txt files under folder "DSBF/dataset/pthList/" with your dataset path.
+2. Update the .txt files under folder ***DSBF/dataset/pthList/*** with your dataset path.
 3. Run the code with command: 
 ```
 nohup sh run.sh > run.txt 2>&1 &
 ```
-4. Check results in DSBF/**dataset**-**task**-**target-data**.txt.
+4. Check results in ***DSBF/`dataset`-`task`-`target-data`.txt***.
 
 ## Updates
 - [12/27/2021] We uploaded a new arXiv version. See [new arXiv version](https://arxiv.org/abs/2110.00726).
