@@ -7,11 +7,10 @@ This repository contains the implementation code for paper:
 
 Junkun Yuan, Xu Ma, Defang Chen, Kun Kuang, Fei Wu, Lanfen Lin
 
-*arXiv preprint, 2021*
+*International Journal of Computer Vision (IJCV), 2022*
 
 [[arXiv](https://arxiv.org/abs/2110.00726)]
 
-## Brief Abstract for the Paper
 <p align="center">
     <img src="framework.png" width="900"> <br>
 </p>
@@ -62,6 +61,7 @@ nohup sh run.sh > run.txt 2>&1 &
 4. Check results in ***DSBF/`dataset`-`task`-`target-data`.txt***.
 
 ## Updates
+- [11/08 2022] Our paper is accepted by International Journal of Computer Vision (IJCV).
 - [12/27/2021] We uploaded a new arXiv version. See [new arXiv version](https://arxiv.org/abs/2110.00726).
 
 
